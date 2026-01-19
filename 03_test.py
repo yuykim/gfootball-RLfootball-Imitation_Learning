@@ -29,10 +29,15 @@ def test():
 
     # 2. 액션 리스트 및 환경 생성
     all_actions = football_action_set.get_action_set({'action_set': 'full'})
-    env = football_env.create_environment(env_name='academy_pass_and_shoot_with_keeper', representation='simple115v2', render=True)
+    env = football_env.create_environment(env_name='academy_pass_and_shoot_with_keeper', 
+                                          representation='simple115v2', 
+                                          render=False
+                                          )
 
     print("AI 플레이 시작!")
     obs = env.reset()
+    goal_count = 0
+    game_count = 1
     try:
         while True:
             with torch.no_grad():
@@ -44,7 +49,12 @@ def test():
             # 인덱스를 액션 객체로 변환하여 에러 방지
             obs, reward, done, info = env.step(all_actions[action_idx])
             time.sleep(0.01)
-            if done: obs = env.reset()
+            if(reward > 0.1):
+                goal_count += 1
+            if done: 
+                obs = env.reset()
+                print(f"score : {goal_count}/{game_count}")
+                game_count += 1
     finally:
         env.close()
 
