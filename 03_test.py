@@ -18,7 +18,7 @@ class BCModel(nn.Module):
 
 def test():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, "il_model_mix.pth")
+    model_path = os.path.join(current_dir, "il_model_goal_only.pth")
     
     # 1. 모델 로드 및 크기 자동 감지
     checkpoint = torch.load(model_path, map_location='cpu', weights_only=False)
