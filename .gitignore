@@ -2,3 +2,4 @@ Video
 # videos
 *.mp4
 doc/Video/
+*.pth
