@@ -5,6 +5,11 @@ from gfootball.env import football_action_set
 import numpy as np
 import time
 import os
+import sys
+
+sys.path.append("..")
+
+import utils
 
 class BCModel(nn.Module):
     def __init__(self, output_dim):
@@ -21,7 +26,7 @@ def test():
     model_path = os.path.join(current_dir, "il_model_goal_only.pth")
     
     # 1. 모델 로드 및 크기 자동 감지
-    checkpoint = torch.load(model_path, map_location='cpu', weights_only=False)
+    checkpoint = torch.load(model_path, map_location='cpu')
     output_dim = checkpoint['net.4.bias'].shape[0]
     model = BCModel(output_dim)
     model.load_state_dict(checkpoint)
@@ -37,8 +42,11 @@ def test():
     print("start!!")
     obs = env.reset()
     goal_count = 0
-    game_count = 1
+    game_count = 0
     game = True
+
+    t = 0
+
     try:
         while game:
             with torch.no_grad():
@@ -49,18 +57,25 @@ def test():
             
             # 인덱스를 액션 객체로 변환하여 에러 방지
             obs, reward, done, info = env.step(all_actions[action_idx])
+
+            frame = env.render(mode="rgb_array")
+            utils.save_frame(frame, t)
+            t = t+1
+
             time.sleep(0.01)
             if(reward > 0.1):
                 goal_count += 1
             if done: 
                 obs = env.reset()
-                print(f"score : {goal_count}/{game_count}")
+                print(f"score : {goal_count}/{game_count+1}")
                 game_count += 1
-            if game_count == 10: 
+            if game_count == 1: 
                 game = False
     finally:
         print("done.")
         env.close()
 
 if __name__ == "__main__":
+    utils.cleanup()
     test()
+    utils.make_video()

@@ -1,1 +1,0 @@
-raise FileNotFoundError(f"ERROR! : {goal_dir}")
