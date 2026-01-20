@@ -32,7 +32,7 @@ run_tag = datetime.now().strftime("%Y%m%d_%H%M%S")  # 실행마다 구분용
 # ---------------------------
 env_config = {'action_set': 'full'}
 env = football_env.create_environment(
-    env_name='academy_counterattack_easy',
+    env_name='academy_pass_and_shoot_with_keeper',
     representation='simple115v2',
     render=True
 )

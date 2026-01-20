@@ -31,7 +31,7 @@ def test():
     all_actions = football_action_set.get_action_set({'action_set': 'full'})
     env = football_env.create_environment(env_name='academy_pass_and_shoot_with_keeper', 
                                           representation='simple115v2', 
-                                          render=False
+                                          render=True
                                           )
 
     print("start!!")
