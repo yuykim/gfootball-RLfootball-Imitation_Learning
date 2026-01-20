@@ -29,7 +29,7 @@ def test():
 
     # 2. 액션 리스트 및 환경 생성
     all_actions = football_action_set.get_action_set({'action_set': 'full'})
-    env = football_env.create_environment(env_name='academy_pass_and_shoot_with_keeper', 
+    env = football_env.create_environment(env_name='academy_counterattack_easy', 
                                           representation='simple115v2', 
                                           render=False
                                           )
