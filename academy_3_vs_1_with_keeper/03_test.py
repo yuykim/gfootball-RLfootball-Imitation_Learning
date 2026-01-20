@@ -34,12 +34,13 @@ def test():
                                           render=False
                                           )
 
-    print("AI 플레이 시작!")
+    print("start!!")
     obs = env.reset()
     goal_count = 0
     game_count = 1
+    game = True
     try:
-        while True:
+        while game:
             with torch.no_grad():
                 output = model(torch.FloatTensor(obs).unsqueeze(0))
                 # 확률 기반 샘플링 (선수들이 더 역동적으로 움직임)
@@ -55,7 +56,10 @@ def test():
                 obs = env.reset()
                 print(f"score : {goal_count}/{game_count}")
                 game_count += 1
+            if game_count == 10: 
+                game = False
     finally:
+        print("done.")
         env.close()
 
 if __name__ == "__main__":

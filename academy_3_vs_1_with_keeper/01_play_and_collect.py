@@ -24,10 +24,15 @@ run_tag = datetime.now().strftime("%Y%m%d_%H%M%S")  # 실행마다 구분용
 
 # ---------------------------
 # 2. 환경 설정
+# academy_3_vs_1_with_keeper - (우리팀) 공격수 3명, (상대) 수비수 1명, 골키퍼 1명
+# academy_corner - 코너킥 상황 
+# academy_counterattack_easy - 역습 상황
+# academy_pass_and_shoot_with_keeper - (우리팀) 공격수 2명, (상대) 수비수 1명, 골키퍼 1명
+# academy_run_to_score_with_keeper - 뒤에서 수비수가 달려오고 골키퍼랑 1대1 상황
 # ---------------------------
 env_config = {'action_set': 'full'}
 env = football_env.create_environment(
-    env_name='academy_pass_and_shoot_with_keeper',
+    env_name='academy_counterattack_easy',
     representation='simple115v2',
     render=True
 )
@@ -47,8 +52,8 @@ all_actions = football_action_set.get_action_set(env_config)
 clock = pygame.time.Clock()
 TARGET_FPS = 18
 
-print(f"데이터 수집 시작! (FPS: {TARGET_FPS})")
-print(f"저장 위치: {root_dir}")
+print(f"start data collect (FPS: {TARGET_FPS})")
+print(f"save dir : {root_dir}")
 
 # ---------------------------
 # 4. 에피소드 단위 버퍼
@@ -109,7 +114,7 @@ try:
             obs = env.reset()
 
 except KeyboardInterrupt:
-    print("\n중단됨. 저장은 에피소드 단위로 이미 반영됨.")
+    print("\ninterrupt!!")
 
 finally:
     env.close()

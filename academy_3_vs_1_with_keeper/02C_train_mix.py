@@ -32,7 +32,7 @@ def main():
     nogoal_files = sorted(glob.glob(os.path.join(nogoal_dir, "*.npz")))
 
     if len(goal_files) == 0 or len(nogoal_files) == 0:
-        raise FileNotFoundError("goal/no_goal 폴더 둘 다 npz가 있어야 70/30 혼합이 가능합니다.")
+        raise FileNotFoundError(f"ERROR!")
 
     # ✅ 혼합 비율 (에피소드 파일 단위)
     p_goal = 0.7
@@ -63,7 +63,7 @@ def main():
     actions = torch.tensor(acts_np, dtype=torch.long)
 
     num_classes = int(actions.max().item()) + 1
-    print(f"프레임 수: {len(states)}, 액션 종류: {num_classes}")
+    print(f"num of frame: {len(states)}, num of action : {num_classes}")
 
     dataset = TensorDataset(states, actions)
     loader = DataLoader(dataset, batch_size=64, shuffle=True)
@@ -72,7 +72,7 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    print("학습 시작...")
+    print("train start..")
     for epoch in range(500):
         total_loss = 0.0
         for s, a in loader:
@@ -86,7 +86,8 @@ def main():
 
     save_path = os.path.join(current_dir, "il_model_mix.pth")
     torch.save(model.state_dict(), save_path)
-    print(f"모델 저장 완료: {save_path}")
+    print(f"complete : {save_path}")
+
 
 if __name__ == "__main__":
     main()

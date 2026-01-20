@@ -44,16 +44,16 @@ def main():
 
     goal_files = sorted(glob.glob(os.path.join(goal_dir, "*.npz")))
     if len(goal_files) == 0:
-        raise FileNotFoundError(f"goal 폴더에 npz가 없습니다: {goal_dir}")
+        raise FileNotFoundError(f"ERROR! : {goal_dir}")
 
-    print(f"[GOAL ONLY] 파일 {len(goal_files)}개 로드 중...")
+    print(f"[GOAL ONLY] {len(goal_files)} load...")
     obs_np, acts_np = load_npz_files(goal_files)
 
     states = torch.tensor(obs_np, dtype=torch.float32)
     actions = torch.tensor(acts_np, dtype=torch.long)
 
     num_classes = int(actions.max().item()) + 1
-    print(f"프레임 수: {len(states)}, 액션 종류: {num_classes}")
+    print(f"num of frame: {len(states)}, num of action : {num_classes}")
 
     dataset = TensorDataset(states, actions)
     loader = DataLoader(dataset, batch_size=64, shuffle=True)
@@ -65,7 +65,7 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-    print("학습 시작...")
+    print("train start..")
     for epoch in range(500):
         total_loss = 0.0
         for s, a in loader:
@@ -83,7 +83,7 @@ def main():
     # -------------------------
     save_path = os.path.join(current_dir, "il_model_goal_only.pth")
     torch.save(model.state_dict(), save_path)
-    print(f"모델 저장 완료: {save_path}")
+    print(f"complete : {save_path}")
 
 if __name__ == "__main__":
     main()
